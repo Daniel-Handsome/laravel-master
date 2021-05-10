@@ -3,7 +3,7 @@
 {{-- 跟上面相反 到1就跑 --}}
 {{-- @continue($key == 1) --}}
 
-//類似迴圈
+{{-- //類似迴圈 --}}
 @if ($loop->even)
     <div>{{ $key }} .{{ $con['title'] }}</div>
 @else

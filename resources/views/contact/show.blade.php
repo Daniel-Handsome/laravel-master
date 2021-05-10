@@ -9,7 +9,7 @@
         <div> asdadsadsads</div>
     @else
         <h5>11111111</h5>
-    @endifF
+    @endif
 
 
     {{-- 當 flase執行 直接else的意思 --}}
