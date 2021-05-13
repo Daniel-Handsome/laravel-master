@@ -13,7 +13,9 @@ class StorePost extends FormRequest
      */
     public function authorize()
     {
-        return false;
+
+        //這邊他媽的要true
+        return true;
     }
 
     /**
