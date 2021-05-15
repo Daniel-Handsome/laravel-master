@@ -9,6 +9,10 @@
 </head>
 
 <body>
+
+    @if (session('status'))
+    <div style="background-color: red">session</div>
+    @endif
     @yield('content')
 </body>
 

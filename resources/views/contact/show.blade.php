@@ -1,30 +1,29 @@
 @extends('layout.tep')
 
 
-@section('title', $contact['title'])
+@section('title', $contact->title)
 
 @section('content')
-
-    @if ($contact['new_b'])
+    {{-- @if ($contact['new_b'])
         <div> asdadsadsads</div>
     @else
         <h5>11111111</h5>
-    @endif
+    @endif --}}
 
 
     {{-- 當 flase執行 直接else的意思 --}}
-    @unless($contact['new_b'])
+    {{-- @unless($contact['new_b'])
         <div class="div"> good</div>
-    @endunless
+    @endunless --}}
 
 
     {{-- isset跟php用法一樣 檢視存不存在 --}}
-    @isset($contact['has_true'])
+    {{-- @isset($contact['has_true'])
         isset
-    @endisset
+    @endisset --}}
 
 
-    {{ $contact['title'] }}
-    {{ $contact['content'] }}
+    {{ $contact->title }}
+    {{ $contact->content }}
 
 @endsection

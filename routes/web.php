@@ -76,7 +76,7 @@ Route::get('/contact/{id}', function ($id) use ($contact) {
 
 // Route::get('/posts/{id}', function ($id) {
 //     return 'hey' . $id;
-// })
+// });
 //     // ->where([
 //     //     'id' => '[0-9]+'
 //     // ])
@@ -136,7 +136,8 @@ Route::get('/request', function (Request $request) use ($contact) {
     dd(request()->all());
 });
 
-Route::resource('posts', 'PostsController')->only('index','show','create','store');
+Route::resource('posts', 'PostsController');
+    // ->only('index', 'show', 'create', 'store', 'edit','update');
 //只用那些
 //進用那些
 // Route::resource('posts', 'PostsController')->except('index', 'show');

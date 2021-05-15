@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
+use App\Jobs\SendJob;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
@@ -47,6 +48,8 @@ class PostsController extends Controller
      */
     public function create()
     {
+        // dd(1);
+        // SendJob::dispatch();
         return view('posts.create');
     }
 
@@ -68,14 +71,16 @@ class PostsController extends Controller
         // $errors 變數是 Illuminate\Support\MessageBag 的實例
         //  在我們的範例中，當驗證失敗，使用者將被重導到我們的控制器 create 方法
 
-        $validate =  $request->validate();
+        $validated =  $request->validated();
 
-        $post = new BlogPost;
-        //$request->input('title') 錯 要改驗證過的
-        // 記住驗證過的 跑過規則是array
-        $post->title = $validate['title'] ;
-        $post->content = $validate['content'];
-        $post->save();
+        $post = BlogPost::create($validated);
+        // $post = new BlogPost; 跟create 插在create要白名單
+        //其實也可以用物件 然後用 create make fill 的方法
+
+        // // 記住驗證過的 跑過規則是array
+
+        // 有時你可能希望暫存一些資料，並只在下次請求有效。你可以使用 Session::flash 方法來達成目的：
+        $request->session()->flash('status', 'The Blog post was created!');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
     }
@@ -90,7 +95,12 @@ class PostsController extends Controller
     {
         // abort_if(!isset($this->contact[$id]), 404);
         // Fail就不用404了 直接掛
-        return view('contact.show', ['contact' => BlogPost::findOrFail('id')]);
+
+        // dd(BlogPost::find($id));
+        return view('posts.show', ['post' => BlogPost::find($id)]);
+
+        // dd(BlogPost::find('id'));
+        // return view('contact.show', ['contact' => BlogPost::find('id')]);
     }
 
     /**
@@ -101,7 +111,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd(1);
+        return view('posts.edit',['post'=>BlogPost::findOrFail($id)]);
     }
 
     /**
