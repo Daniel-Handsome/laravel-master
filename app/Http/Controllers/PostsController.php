@@ -10,6 +10,46 @@ use Illuminate\Http\Request;
 class PostsController extends Controller
 {
 
+
+    // tinker的 關聯
+
+//   建立關聯
+
+// User::find(1)->roles()->save($role);
+// 上面的例子裡，新的 Role 模型物件被儲存，
+// 同時附加關聯到 user 模型。也可以傳入屬性陣列，
+// 把資料加到關聯資料表：
+    //
+//  這邊是子連父  不一樣
+    // hasOne $profile->author()->associate($author)->save();
+    // belognto 原本是 $author->profile()->save($profile);
+    // 當然你可以直接賦值去 反正是測試
+
+
+
+    // 查詢關聯
+
+    // 不用with的方法
+    // 可以直接調用 ex  $profile->author
+    //另外沒有關聯前 不會顯示出來 ex
+    // $profile = Profile::find(1); 不會跑出來關聯
+    // $profile->author();
+    // $profile; 這時才回跑出來 因為有呼叫了
+
+        // with用法
+        // $author = Author::with('Profile')->whereKey(1)->first();
+        // 一次with多個
+        // $author = Author::with(['Profile','comment'])->whereKey(1)->first();
+
+
+
+
+
+
+
+
+
+
     // private $contact = [
     //     1 => [
     //         'title' => '1111',
