@@ -26,9 +26,9 @@ Route::get('/controller', [HomeController::class, 'home']);
 
 
 
-// Route::get('/', function () {
-//     return view('home.index');
-// })->name('home.index');
+Route::get('/', function () {
+    return view('home.index');
+})->name('home.index');
 
 //上面簡化來的  這樣不會麻煩 只是單純回傳view就這樣 前提不用傳參數或其他工作
 // Route::view('/', 'home.index')->name('home.index')->middleware('auth');

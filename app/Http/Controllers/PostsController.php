@@ -38,7 +38,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return view('contact.index', ['contact' => BlogPost::all()]);
+
+        return view('posts.index', ['posts' => BlogPost::all()]);
     }
 
     /**
@@ -80,6 +81,7 @@ class PostsController extends Controller
         // // 記住驗證過的 跑過規則是array
 
         // 有時你可能希望暫存一些資料，並只在下次請求有效。你可以使用 Session::flash 方法來達成目的：
+        //可以在不同地方存入同名不同內容的 這樣模板一樣判斷名存在 就不用很多判斷了
         $request->session()->flash('status', 'The Blog post was created!');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
@@ -111,8 +113,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        dd(1);
-        return view('posts.edit',['post'=>BlogPost::findOrFail($id)]);
+        // dd(1);
+        return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
 
     /**
@@ -122,9 +124,24 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, $id)
     {
-        //
+        $post = BlogPost::find($id);
+        $validated =  $request->validated();
+        // fill vs update
+        // 1
+        //此時，用戶對象仍然僅在具有更新值的內存中，但是不執行實際的更新查詢。
+        //這樣我們可以在這裡有更多的邏輯
+        // 2
+        // 更新方法是愚蠢的，即使沒有更改任何值也可以查詢數據庫。
+        // 但是save方法是智能的，它可以計算出您是否確實進行了更改，
+        // 例如，如果沒有任何更改，則不執行查詢。
+        $post->fill($validated);
+        $post->save();
+
+        $request->session()->flash('status', 'Blog post was updated');
+
+        return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
     /**
@@ -135,6 +152,14 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = BlogPost::findOrFail($id);
+        $post->delete();
+
+        //重點了 你要放session 要有requser 請求 你在上面寫
+        // Requser $requesr 跟下面寫requser基本一定 這是輔助方法
+        //當然也可以直接抓session
+        session()->flash('status', 'Blog Delete!!!!!');
+
+        return redirect()->route('posts.index');
     }
 }
