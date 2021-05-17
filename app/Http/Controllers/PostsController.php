@@ -21,8 +21,8 @@ class PostsController extends Controller
 // 把資料加到關聯資料表：
     //
 //  這邊是子連父  不一樣
-    // hasOne $profile->author()->associate($author)->save();
-    // belognto 原本是 $author->profile()->save($profile);
+    // belognto  $profile->author()->associate($author)->save();
+    // hasOne  原本是 $author->profile()->save($profile);
     // 當然你可以直接賦值去 反正是測試
 
 
@@ -152,7 +152,7 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
         // dd(1);
         return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
