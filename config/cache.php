@@ -84,6 +84,18 @@ return [
             'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
             'endpoint' => env('DYNAMODB_ENDPOINT'),
         ],
+        'inverse'   => [
+            'length'    => 5,
+            'width'     => 120,
+            'height'    => 36,
+            'quality'   => 90,
+            'sensitive' => true,
+            'angle'     => 12,
+            'sharpen'   => 10,
+            'blur'      => 2,
+            'invert'    => true,
+            'contrast'  => -5,
+        ]
 
     ],
 
@@ -98,6 +110,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache'),
 
 ];

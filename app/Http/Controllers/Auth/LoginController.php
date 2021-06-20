@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\User;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,42 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $userSocialite = Socialite::driver('facebook')->stateless()->user();
+
+        $ckeck = User::where('email', $userSocialite->email)->first();
+
+        if ($ckeck) {
+            Auth::login($ckeck);
+            return redirect()->route('home.index');
+
+        } else {
+            $user = new User;
+            $user->name = $userSocialite->name;
+            $user->email = $userSocialite->email;
+            $user->facebook_id = $userSocialite->id;
+            $user->password = uniqid();
+            $user->save();
+
+            Auth::login($user);
+            return redirect()->route('home.index');
+        };
     }
 }

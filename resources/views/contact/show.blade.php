@@ -11,16 +11,16 @@
     @endif --}}
 
 
-    {{-- 當 flase執行 直接else的意思 --}}
-    {{-- @unless($contact['new_b'])
+    當 flase執行 直接else的意思 
+    @unless($contact['new_b'])
         <div class="div"> good</div>
-    @endunless --}}
+    @endunless
 
 
     {{-- isset跟php用法一樣 檢視存不存在 --}}
-    {{-- @isset($contact['has_true'])
+    @isset($contact['has_true'])
         isset
-    @endisset --}}
+    @endisset 
 
 
     {{ $contact->title }}

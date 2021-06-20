@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use function Ramsey\Uuid\v1;
@@ -28,7 +29,7 @@ Route::get('/controller', [HomeController::class, 'home']);
 
 Route::get('/', function () {
     return view('home.index');
-})->name('home.index');
+})->name('home.index')->middleware('auth');
 
 //上面簡化來的  這樣不會麻煩 只是單純回傳view就這樣 前提不用傳參數或其他工作
 // Route::view('/', 'home.index')->name('home.index')->middleware('auth');
@@ -52,7 +53,7 @@ Route::get('/contact', function () use ($contact) {
 
     // compact($contact) == ['contact'=>$contact]
     return view('contact.index', ['contact' => $contact]);
-});
+})->middleware('auth.basic');
 
 //use() 使用未定義 的var
 Route::get('/contact/{id}', function ($id) use ($contact) {
@@ -135,9 +136,20 @@ Route::get('/fun/download', function () use ($contact) {
 Route::get('/request', function (Request $request) use ($contact) {
     dd(request()->all());
 });
-
-Route::resource('posts', 'PostsController');
+Route::resource('/test', 'TestController');
+Route::resource('/posts', 'PostsController');
     // ->only('index', 'show', 'create', 'store', 'edit','update');
 //只用那些
-//進用那些
+//禁用那些
 // Route::resource('posts', 'PostsController')->except('index', 'show');
+
+
+//facebook
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
+//github
+Route::get('login/github', 'Auth\LoginController@githubRedirectToProvider');
+Route::get('login/github/callback', 'Auth\LoginController@githubHandleProviderCallback');
+
+Auth::routes();

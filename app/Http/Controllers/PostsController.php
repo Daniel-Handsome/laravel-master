@@ -6,23 +6,27 @@ use App\BlogPost;
 use App\Http\Requests\StorePost;
 use App\Jobs\SendJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     // tinker的 關聯
 
-//   建立關聯
+    //   建立關聯
 
-// User::find(1)->roles()->save($role);
-// 上面的例子裡，新的 Role 模型物件被儲存，
-// 同時附加關聯到 user 模型。也可以傳入屬性陣列，
-// 把資料加到關聯資料表：
+    // User::find(1)->roles()->save($role);
+    // 上面的例子裡，新的 Role 模型物件被儲存，
+    // 同時附加關聯到 user 模型。也可以傳入屬性陣列，
+    // 把資料加到關聯資料表：
     //
-//  這邊是子連父  不一樣
-    // hasOne $profile->author()->associate($author)->save();
-    // belognto 原本是 $author->profile()->save($profile);
+    //  這邊是子連父  不一樣
+    //  belognto $profile->author()->associate($author)->save();
+    // hasOne  原本是 $author->profile()->save($profile);
     // 當然你可以直接賦值去 反正是測試
 
 
@@ -36,15 +40,23 @@ class PostsController extends Controller
     // $profile->author();
     // $profile; 這時才回跑出來 因為有呼叫了
 
-        // with用法
-        // $author = Author::with('Profile')->whereKey(1)->first();
-        // 一次with多個
-        // $author = Author::with(['Profile','comment'])->whereKey(1)->first();
+    // with用法
+    // $author = Author::with('Profile')->whereKey(1)->first();
+    // 一次with多個
+    // $author = Author::with(['Profile','comment'])->whereKey(1)->first();
+
+    // ::find() === whereKey(1)->first(); 原本寫法
 
 
 
-
-
+    //這邊在tinker都能用 這邊也因該能之後有機會用看看
+    //model查詢
+    // 查詢有沒有關聯 關聯用has  where查自己屬性
+    // BlogPost::doesntHave('comments')->get();
+    // BlogPost::has('comments')->get();
+    // 查詢關聯的有沒有這個屬性的 裡面有沒有符合  這是查詢沒有的
+    // BlogPost::whereDoesntHave('comments',function($query){$query->where('content','like','%a%');})->get();
+    // 詢關聯的有沒有這個屬性的 裡面有沒有符合 這是查尋有的
 
 
 
@@ -78,8 +90,12 @@ class PostsController extends Controller
      */
     public function index()
     {
+        // dd(Auth::user());
 
-        return view('posts.index', ['posts' => BlogPost::all()]);
+        // withCount 技數字  看文章下面幾個評論
+        $posts = BlogPost::withCount('comments')->get();
+        // dd($posts);
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -105,7 +121,9 @@ class PostsController extends Controller
 
     public function store(StorePost $request)
     {
-
+        $a = new BlogPost;
+        $a->titile = 'aa';
+        $a->save();
 
         //    注意不需要在GET路由綁定錯誤訊息至視圖因為Laravel會自動檢查 session內的錯誤資料，如果錯誤存在的話，會自動綁定這些錯誤訊息到視圖
         //    。所以，請注意到 $errors 變數在每次請求的所有視圖中都將可以使用，讓你可以方便假設 $errors 變數已被定義且可以安全地使用
@@ -176,6 +194,7 @@ class PostsController extends Controller
         // 更新方法是愚蠢的，即使沒有更改任何值也可以查詢數據庫。
         // 但是save方法是智能的，它可以計算出您是否確實進行了更改，
         // 例如，如果沒有任何更改，則不執行查詢。
+
         $post->fill($validated);
         $post->save();
 

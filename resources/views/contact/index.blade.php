@@ -12,13 +12,13 @@
     {{-- 改成    forelse  @empty --}}
 
 
-    {{-- @if (count($contact))
+    {{--  @if (count($contact))
         @foreach ($contact as $key => $con)
             <div>{{ $key }} .{{ $con['title'] }}</div>
         @endforeach
     @else
         no isset
-    @endif --}}
+    @endif  --}}
 
     向這個
 
