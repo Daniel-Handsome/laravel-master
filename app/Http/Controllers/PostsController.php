@@ -170,7 +170,7 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
         // dd(1);
         return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
