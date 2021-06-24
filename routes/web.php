@@ -149,7 +149,7 @@ Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
 
 //github
-Route::get('login/github', 'Auth\LoginController@githubRedirectToProvider');
-Route::get('login/github/callback', 'Auth\LoginController@githubHandleProviderCallback');
+Route::get('login/github', 'Auth\LoginController@github');
+Route::get('login/github/callback', 'Auth\LoginController@githubCallback');
 
 Auth::routes();

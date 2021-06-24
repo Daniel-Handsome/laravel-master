@@ -77,4 +77,23 @@ class LoginController extends Controller
             return redirect()->route('home.index');
         };
     }
+
+
+
+    public function github()
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function githubCallback()
+    {
+        $user = Socialite::driver('github')->stateless()->user();
+
+        dd($user);
+    }
 }
