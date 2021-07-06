@@ -18,12 +18,14 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
             $table->text('content');
+            //因為他是可以很多 所以用index
 
+            //有外key 所以model 的函示名稱要注意 要blog_post這樣
             $table->unsignedBigInteger('blog_post_id')->index();
             $table->foreign('blog_post_id')
-            ->references('id')
-            ->on('blog_posts')
-            ->onDelete('cascade');
+                ->references('id')
+                ->on('blog_posts')
+                ->onDelete('cascade');
         });
     }
 

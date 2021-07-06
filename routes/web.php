@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostsController;
+use function Ramsey\Uuid\v1;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
-use function Ramsey\Uuid\v1;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,3 +154,10 @@ Route::get('login/github', 'Auth\LoginController@github');
 Route::get('login/github/callback', 'Auth\LoginController@githubCallback');
 
 Auth::routes();
+
+
+//artisan 
+Route::get('artisan',function(){
+    Artisan::call('migrate:reset'); 
+    return 1;
+});

@@ -14,7 +14,7 @@ class AddFacebookIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('facebook_id,30')
+            $table->string('facebook_id',30)
                 ->nullable()
                 ->after('password');
         });
